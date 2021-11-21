@@ -31,13 +31,13 @@ func main(){
 	data[3] = "赵六"
 	datachan := make(chan string,40)	//存放数据的通道
 	exitchan := make(chan bool, 3)		//缓冲通道
-	//go adddata(datachan,data)	//开启一个goroutine把名字依次放入chan中
+	go adddata(datachan,data)	//开启一个goroutine把名字依次放入chan中
 	for i:=0;i<40;i++{
 		datachan <-data[i%4]
 	}
 	close(datachan)
 	//开启三个goroutine从datachan中接受名字并打印
-	for j:=0 ; j<4 ;j++{
+	for j:=0 ; j<3 ;j++{
 		go printname(datachan,exitchan)
 	}
 	for k:= 0 ;k<3 ;k++ {
